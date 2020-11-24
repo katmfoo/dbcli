@@ -14,7 +14,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'db-cli=db-cli:main'
+            'db-cli=dbcli:main'
         ]
     }
 )
