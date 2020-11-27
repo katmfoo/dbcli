@@ -10,7 +10,8 @@ setup(
     license='MIT',
     packages=['dbcli'],
     install_requires=[
-        'prompt_toolkit'
+        'prompt_toolkit',
+        'mysql-connector-python'
     ],
     entry_points={
         'console_scripts': [
