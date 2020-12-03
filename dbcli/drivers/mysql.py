@@ -1,7 +1,7 @@
-import drivers.base
+from .base import BaseDriver, ExecutionResponse
 import mysql.connector
 
-class Driver(drivers.base.Driver):
+class MySQLDriver(BaseDriver):
 
     item_singular: str = 'row'
     item_plural: str = 'rows'
@@ -39,11 +39,11 @@ class Driver(drivers.base.Driver):
             if cursor.description is not None:
                 result = cursor.fetchall()
                 headers = tuple([i[0] for i in cursor.description])
-                return drivers.base.ExecutionResponse(headers=headers, result=result, count=cursor.rowcount)
+                return ExecutionResponse(headers=headers, result=result, count=cursor.rowcount)
             else:
                 # There is no result set
-                return drivers.base.ExecutionResponse(count=cursor.rowcount)
+                return ExecutionResponse(count=cursor.rowcount)
         except Exception as e:
             # There was an error executing the query
             error_message = str(e)
-            return drivers.base.ExecutionResponse(success=False, error_message=error_message)
+            return ExecutionResponse(success=False, error_message=error_message)

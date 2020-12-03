@@ -27,7 +27,7 @@ class ExecutionResponse():
         self.count = count
         self.error_message = error_message
 
-class Driver(ABC):
+class BaseDriver(ABC):
     """Base driver class that can be extended to add a new database engine (or
     anything else really)
     """

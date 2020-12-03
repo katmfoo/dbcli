@@ -1,19 +1,26 @@
+from typing import Optional
 from prompt_toolkit import PromptSession
-import drivers.mysql
+from drivers.base import ExecutionResponse
+from drivers.mysql import MySQLDriver
 
 def main():
     session = PromptSession()
 
-    driver = drivers.mysql.Driver()
+    driver = MySQLDriver()
     driver.connect(port=6101);
 
     while True:
         try:
-            text = session.prompt('> ')
-            result = driver.execute(text)
+            text: str = session.prompt('> ')
+            result: ExecutionResponse = driver.execute(text)
 
             if result.success:
-                item_word: str = driver.get_pluralized_item_name(result.count)
+                if result.count is not None:
+                    item_word: Optional[str] = \
+                        driver.get_pluralized_item_name(result.count)
+                else:
+                    item_word: Optional[str] = None
+
                 if result.result is not None:
                     # There is a result set
 
@@ -27,7 +34,8 @@ def main():
                     if result.count is not None:
                         if result.count > 0:
                             if item_word is not None:
-                                print('Success, %s %s retrieved' % (result.count, item_word))
+                                print('Success, %s %s retrieved' \
+                                    % (result.count, item_word))
                             else:
                                 print('Success')
                         else:
@@ -38,8 +46,10 @@ def main():
                     # There is not a result set
 
                     # Print a success message
-                    if result.count is not None and result.count > 0 and item_word is not None:
-                        print('Success, %s %s affected' % (result.count, item_word))
+                    if result.count is not None and result.count > 0 \
+                        and item_word is not None:
+                        print('Success, %s %s affected' \
+                            % (result.count, item_word))
                     else:
                         print('Success')
             else:
